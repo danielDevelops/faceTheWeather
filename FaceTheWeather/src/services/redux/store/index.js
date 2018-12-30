@@ -3,7 +3,7 @@
 import { configureStore } from './configureStore';
 import {type ReduxState} from '../flowTypes';
 
-_instance = null;
+let _instance = null;
 export function getStore() {
     if (this._instance == null){
         this._instance = configureStore(getInitialState());

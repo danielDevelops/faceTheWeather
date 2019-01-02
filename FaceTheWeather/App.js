@@ -11,7 +11,7 @@ import {Platform, StyleSheet, Text, View} from 'react-native';
 import getForcast from './src/services/api/darksky';
 import { getCurrentCorrdinatesAsync } from './src/services/domain/location/index.js';
 import { getLocationByLatLongAsync, getLocationByAddress } from './src/services/api/mapping';
-import { updateUser, getUserInfoName } from './src/services/repository/userInfo';
+import { updateUser, getUserInfoName } from './src/services/data/repositories/userInfo';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',

@@ -19,18 +19,27 @@ export const UserInfoSchema = {
 }
 
 const userInfoTableName = UserInfoSchema.name;
-export async function updateUser(firstName:string,lastName:string) : Promise<void> {
+
+async function realmWrite(dbObject:UserInfo) : Promise<void>{
     const realm = await openSchema();
     realm.write(() => {
-        const newRec : UserInfo = {id:1, FirstName:firstName, LastName:lastName}
-        realm.create(userInfoTableName,newRec);
+        realm.create(userInfoTableName,dbObject);
     });
     realm.close();
 }
 
+function getObjects(realm:Realm) : Promise<UserInfo[]> {
+    return realm.objects(userInfoTableName);
+}
+
+export async function updateUser(firstName:string,lastName:string) : Promise<void> {
+    const realm = await openSchema();
+    await realmWrite({id:1,FirstName:firstName,LastName:lastName});
+}
+
 export async function getUserInfoName() : Promise<string> {
     const realm = await openSchema();
-    const userInfos:UserInfo[] = realm.objects(userInfoTableName);
+    const userInfos:UserInfo[] = getObjects(realm);
     if (userInfos.length > 1)
         throw 'There are multiple entries in the user database, this should not happen';
     if (userInfos.length == 0)

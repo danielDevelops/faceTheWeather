@@ -1,10 +1,24 @@
 // @flow
 
-import { UserInfoSchema, openSchema, type UserInfo } from './schema';
+import { openSchema } from '../schema';
 import Realm from 'realm';
 
-const userInfoTableName = UserInfoSchema.name;
+export type UserInfo = {
+    id:number,
+    FirstName:string,
+    LastName:string
+}
+export const UserInfoSchema = {
+    name:'UserInfo',
+    primaryKey: 'id',
+    properties:{
+        id: 'int',
+        FirstName:'string',
+        LastName:'string'
+    }
+}
 
+const userInfoTableName = UserInfoSchema.name;
 export async function updateUser(firstName:string,lastName:string) : Promise<void> {
     const realm = await openSchema();
     realm.write(() => {

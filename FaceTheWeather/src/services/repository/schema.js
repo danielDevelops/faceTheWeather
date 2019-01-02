@@ -2,6 +2,11 @@
 
 import Realm from 'realm';
 
+export type UserInfo = {
+    id:number,
+    FirstName:string,
+    LastName:string
+}
 export const UserInfoSchema = {
     name:'UserInfo',
     primaryKey: 'id',
@@ -10,6 +15,12 @@ export const UserInfoSchema = {
         FirstName:'string',
         LastName:'string'
     }
+}
+
+export type Location = {
+    id:number,
+    city:string,
+    state:string
 }
 
 export const LocationSchema = {
@@ -22,6 +33,14 @@ export const LocationSchema = {
     }
 }
 
+export type Weather = {
+    id: number,
+    temperature: string,
+    precipitationType: string,
+    precipitationPercentage: string,
+    location: Location
+}
+
 export const WeatherSchema = {
     name: 'Weather',
     primaryKey: 'id',
@@ -32,6 +51,12 @@ export const WeatherSchema = {
         precipitationPercentage: 'string',
         location: 'Location'
     }
+}
+
+export type Mood = {
+    id: number,
+    weather: Weather,
+    emotion: string
 }
 
 export const MoodSchema = {

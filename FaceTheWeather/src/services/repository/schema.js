@@ -45,7 +45,7 @@ export const MoodSchema = {
 }
 
 export const openSchema = async () : Promise<Realm> => {
-    const realm: Realm =  await Realm.open({schema:[LocationSchema,MoodSchema,UserInfoSchema,WeatherSchema]});
+    const realm = await Realm.open({schema:[LocationSchema,MoodSchema,UserInfoSchema,WeatherSchema]});
     return realm;
 }
 

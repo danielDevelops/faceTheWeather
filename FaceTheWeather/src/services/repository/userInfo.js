@@ -8,7 +8,7 @@ const userInfoTableName = UserInfoSchema.name;
 export async function updateUser(firstName:string,lastName:string) : Promise<void> {
     const realm = await openSchema();
     realm.write(() => {
-        realm.create(userInfoTableName,{id:1, firstName, lastName});
+        realm.create(userInfoTableName,{id:1, FirstName:firstName, LastName:lastName});
     });
     realm.close();
 }
@@ -21,7 +21,7 @@ export async function getUserInfoName() : Promise<string> {
     if (userInfos.length == 0)
         return '';
     const user = userInfos[0];
-    const name = `${user.firstName} ${user.lastName}`;
+    const name = `${user.FirstName} ${user.LastName}`;
     realm.close();
     return name;
 }

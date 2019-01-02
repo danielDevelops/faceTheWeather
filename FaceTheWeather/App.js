@@ -11,6 +11,7 @@ import {Platform, StyleSheet, Text, View} from 'react-native';
 import getForcast from './src/services/api/darksky';
 import { getCurrentCorrdinatesAsync } from './src/services/domain/location/index.js';
 import { getLocationByLatLongAsync, getLocationByAddress } from './src/services/api/mapping';
+import { updateUser, getUserInfoName } from './src/services/repository/userInfo';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -28,15 +29,18 @@ export default class App extends Component<Props, State> {
         darkskyTesting:''
     }
     componentDidMount = async () => {
-        //const darkSkyData = await getForcast("28.7881","-81.6047");
-        //const darkskyTesting = JSON.stringify(darkSkyData);
-        const position  = await getCurrentCorrdinatesAsync();
+        // //const darkSkyData = await getForcast("28.7881","-81.6047");
+        // //const darkskyTesting = JSON.stringify(darkSkyData);
+        // const position  = await getCurrentCorrdinatesAsync();
 
-        const dataFromAzure = await getLocationByLatLongAsync(position.coords.latitude,position.coords.longitude);
-        //const dataFromAzure = await getLocationByAddress("");
+        // const dataFromAzure = await getLocationByLatLongAsync(position.coords.latitude,position.coords.longitude);
+        // //const dataFromAzure = await getLocationByAddress("");
         
-        const darkskyTesting = JSON.stringify(dataFromAzure);
-        this.setState({darkskyTesting});
+        // const darkskyTesting = JSON.stringify(dataFromAzure);
+        // this.setState({darkskyTesting});
+        //await updateUser("Daniel", "Martin");
+        const darkskyTesting = await getUserInfoName();
+        this.setState({darkskyTesting})
     }
   render() {
     return (

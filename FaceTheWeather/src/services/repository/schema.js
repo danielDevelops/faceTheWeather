@@ -2,7 +2,7 @@
 
 import Realm from 'realm';
 
-const UserInfoSchema = {
+export const UserInfoSchema = {
     name:'UserInfo',
     primaryKey: 'id',
     properties:{
@@ -12,7 +12,7 @@ const UserInfoSchema = {
     }
 }
 
-const LocationSchema = {
+export const LocationSchema = {
     name: 'Location',
     primaryKey: 'id',
     properties:{
@@ -22,7 +22,7 @@ const LocationSchema = {
     }
 }
 
-const WeatherSchema = {
+export const WeatherSchema = {
     name: 'Weather',
     primaryKey: 'id',
     properties:{
@@ -34,7 +34,7 @@ const WeatherSchema = {
     }
 }
 
-const MoodSchema = {
+export const MoodSchema = {
     name: 'Mood',
     primaryKey: 'id',
     properties:{
@@ -44,15 +44,8 @@ const MoodSchema = {
     }
 }
 
-const openSchema = async () : Promise<Realm> => {
+export const openSchema = async () : Promise<Realm> => {
     const realm: Realm =  await Realm.open({schema:[LocationSchema,MoodSchema,UserInfoSchema,WeatherSchema]});
     return realm;
 }
 
-module.exports = {
-    LocationSchema,
-    WeatherSchema,
-    MoodSchema,
-    UserInfoSchema,
-    openSchema
-}

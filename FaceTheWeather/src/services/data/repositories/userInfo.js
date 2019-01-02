@@ -28,7 +28,7 @@ async function realmWrite(dbObject:UserInfo) : Promise<void>{
     realm.close();
 }
 
-function getObjects(realm:Realm) : Promise<UserInfo[]> {
+function getObjects(realm:Realm) : UserInfo[] {
     return realm.objects(userInfoTableName);
 }
 

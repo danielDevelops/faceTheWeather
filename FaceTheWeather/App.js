@@ -6,65 +6,76 @@
  * @flow
  */
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import React, { Component } from 'react';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import getForcast from './src/services/api/darksky';
 import { getCurrentCorrdinatesAsync } from './src/services/domain/location/index.js';
 import { getLocationByLatLongAsync, getLocationByAddress } from './src/services/api/mapping';
+import { updateUser, getUserInfoName } from './src/services/data/repositories/userInfo';
+import FtWCamera from './src/components/Camera';
 
 const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
+    ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
+    android:
+        'Double tap R on your keyboard to reload,\n' +
+        'Shake or press menu button for dev menu',
 });
 
 type Props = {};
 type State = {
-    darkskyTesting:string
+    darkskyTesting: string
 }
 export default class App extends Component<Props, State> {
     state = {
-        darkskyTesting:''
+        darkskyTesting: ''
     }
     componentDidMount = async () => {
-        //const darkSkyData = await getForcast("28.7881","-81.6047");
-        //const darkskyTesting = JSON.stringify(darkSkyData);
-        const position  = await getCurrentCorrdinatesAsync();
+        // //const darkSkyData = await getForcast("28.7881","-81.6047");
+        // //const darkskyTesting = JSON.stringify(darkSkyData);
+        // const position  = await getCurrentCorrdinatesAsync();
 
-        const dataFromAzure = await getLocationByLatLongAsync(position.coords.latitude,position.coords.longitude);
-        //const dataFromAzure = await getLocationByAddress("");
-        
-        const darkskyTesting = JSON.stringify(dataFromAzure);
-        this.setState({darkskyTesting});
+        // const dataFromAzure = await getLocationByLatLongAsync(position.coords.latitude,position.coords.longitude);
+        // //const dataFromAzure = await getLocationByAddress("");
+
+        // const darkskyTesting = JSON.stringify(dataFromAzure);
+        // this.setState({darkskyTesting});
+        //await updateUser("Daniel", "Martin");
+        const darkskyTesting = await getUserInfoName();
+        this.setState({ darkskyTesting })
     }
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-        <Text>{this.state.darkskyTesting}</Text>
-      </View>
-    );
-  }
+    render() {
+        return (
+            <View style={{flex:1}}>
+                <View style={styles.container}>
+                    <Text style={styles.welcome}>Welcome to React Native!</Text>
+                    <Text style={styles.instructions}>To get started, edit App.js</Text>
+                    <Text style={styles.instructions}>{instructions}</Text>
+                    <Text>{this.state.darkskyTesting}</Text>
+
+                </View>
+                <View style={{flex:.75}}>
+                    <FtWCamera />
+                </View>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+    container: {
+        flex: .25,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF',
+    },
+    welcome: {
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10,
+    },
+    instructions: {
+        textAlign: 'center',
+        color: '#333333',
+        marginBottom: 5,
+    },
 });

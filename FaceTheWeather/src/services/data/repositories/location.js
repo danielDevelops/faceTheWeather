@@ -1,7 +1,8 @@
 // @flow
 
-import schema from '../schema';
 import Realm from 'realm';
+import { DBSchema } from '../db';
+import { LocationSchema } from '../schema';
 
 export type Location = {
     id:number,
@@ -9,12 +10,7 @@ export type Location = {
     state:string
 }
 
-export const LocationSchema = {
-    name: 'Location',
-    primaryKey: 'id',
-    properties:{
-        id: 'int',
-        city: 'string',
-        state: 'string'
-    }
+const db:DBSchema<Location> = new DBSchema(LocationSchema.name);
+export function getLocation () {
+    return 'my location';
 }

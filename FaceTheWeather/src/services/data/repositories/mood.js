@@ -1,8 +1,9 @@
 // @flow
 
-import DBSchema from '../schema';
 import Realm from 'realm';
-import {type Weather} from './weather';
+import { type Weather } from './weather';
+import { DBSchema } from '../db';
+import { MoodSchema } from '../schema';
 
 export type emotions = 'anger'|'contempt'|'disgust'|'fear'|'happiness'|'neutral'|'sadness'|'suprise';
 export type Mood = {
@@ -11,16 +12,7 @@ export type Mood = {
     emotion: emotions,
     isPartial: boolean
 }
-export const MoodSchema = {
-    name: 'Mood',
-    primaryKey: 'id',
-    properties:{
-        id: 'int',
-        weather: 'Weather',
-        emotion: 'string',
-        isPartial: 'bool'
-    }
-}
+
 const db:DBSchema<Mood> = new DBSchema<Mood>(MoodSchema.name);
 
 export async function getWeathersByEmotion(emotion:emotions) : Promise<Weather[]> {

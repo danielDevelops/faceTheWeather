@@ -1,22 +1,13 @@
 // @flow
 
-import DBSchema from '../schema';
 import Realm from 'realm';
+import { DBSchema } from '../db';
+import { UserInfoSchema } from '../schema';
 
 export type UserInfo = {
     id:number,
     FirstName:string,
     LastName:string
-}
-
-export const UserInfoSchema = {
-    name:'UserInfo',
-    primaryKey: 'id',
-    properties:{
-        id: 'int',
-        FirstName:'string',
-        LastName:'string'
-    }
 }
 
 const db:DBSchema<UserInfo> = new DBSchema<UserInfo>(UserInfoSchema.name);

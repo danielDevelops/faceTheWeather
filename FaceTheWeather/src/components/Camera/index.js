@@ -7,7 +7,8 @@ import {
     Text,
     StyleSheet,
     View,
-    TouchableOpacity
+    TouchableOpacity,
+    ScrollView
 } from 'react-native';
 
 import { getEmotionFromImage } from '../../services/api/facial/emotion';
@@ -17,14 +18,14 @@ type Props = {
 
 }
 type State = {
-    emotion:?string
+    emotion: ?string
 }
 
 export default class FtWCamera extends Component<Props, State> {
     state = {
-        emotion:null
+        emotion: null
     }
-    camera:?RNCamera;
+    camera: ?RNCamera;
     takePicture = async () => {
 
         const options = { quality: 1, base64: true };
@@ -32,16 +33,32 @@ export default class FtWCamera extends Component<Props, State> {
             return;
         const data = await this.camera.takePictureAsync(options)
         const emotion = await getEmotionFromImage(data.base64);
-        this.setState({emotion});
+        this.setState({ emotion });
     }
 
     render = () => {
-        if (this.state.emotion){
+        if (this.state.emotion) {
             return (
-                <View><Text>{this.state.emotion}</Text></View>
+                <ScrollView>
+                    <View>
+                        <Text>
+                            {JSON.stringify(this.state.emotion, undefined, 2)}
+                        </Text>
+                    </View>
+                    <View>
+                        <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center', }}>
+                            <TouchableOpacity
+                                onPress={() => this.setState({emotion:null})}
+                                style={styles.capture}
+                            >
+                                <Text style={{ fontSize: 14 }}> Reset </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </ScrollView>
             );
         }
-            
+
         return (
             <View style={styles.container}>
                 <RNCamera

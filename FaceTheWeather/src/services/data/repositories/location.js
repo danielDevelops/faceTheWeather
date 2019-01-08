@@ -1,6 +1,6 @@
 // @flow
 
-import { openSchema } from '../schema';
+import schema from '../schema';
 import Realm from 'realm';
 
 export type Location = {

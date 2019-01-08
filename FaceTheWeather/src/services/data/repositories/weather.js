@@ -1,6 +1,6 @@
 // @flow
 
-import { openSchema } from '../schema';
+import schema from '../schema';
 import Realm from 'realm';
 import {type Location } from './location';
 export type Weather = {
@@ -8,6 +8,7 @@ export type Weather = {
     temperature: string,
     precipitationType: string,
     precipitationPercentage: string,
+    temperature:number,
     location: Location
 }
 
@@ -19,6 +20,7 @@ export const WeatherSchema = {
         temperature: 'string',
         precipitationType: 'string',
         precipitationPercentage: 'string',
+        temperature:'int',
         location: 'Location'
     }
 }

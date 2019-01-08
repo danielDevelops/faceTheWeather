@@ -1,6 +1,6 @@
 // @flow
 
-import { openSchema } from '../schema';
+import DBSchema from '../schema';
 import Realm from 'realm';
 
 export type UserInfo = {
@@ -8,6 +8,7 @@ export type UserInfo = {
     FirstName:string,
     LastName:string
 }
+
 export const UserInfoSchema = {
     name:'UserInfo',
     primaryKey: 'id',
@@ -18,34 +19,22 @@ export const UserInfoSchema = {
     }
 }
 
-const userInfoTableName = UserInfoSchema.name;
-
-async function realmWrite(dbObject:UserInfo) : Promise<void>{
-    const realm = await openSchema();
-    realm.write(() => {
-        realm.create(userInfoTableName,dbObject);
-    });
-    realm.close();
-}
-
-function getObjects(realm:Realm) : UserInfo[] {
-    return realm.objects(userInfoTableName);
-}
+const db:DBSchema<UserInfo> = new DBSchema<UserInfo>(UserInfoSchema.name);
 
 export async function updateUser(firstName:string,lastName:string) : Promise<void> {
-    const realm = await openSchema();
-    await realmWrite({id:1,FirstName:firstName,LastName:lastName});
+    const user:UserInfo = {id:1, FirstName:firstName,LastName:lastName};
+    await db.write(user); 
 }
 
-export async function getUserInfoName() : Promise<string> {
-    const realm = await openSchema();
-    const userInfos:UserInfo[] = getObjects(realm);
+export async function getUserInfoName() : Promise<string> {    
+    const data = await db.getObjects();
+    const userInfos:UserInfo[] = data;
     if (userInfos.length > 1)
         throw 'There are multiple entries in the user database, this should not happen';
     if (userInfos.length == 0)
         return '';
     const user = userInfos[0];
     const name = `${user.FirstName} ${user.LastName}`;
-    realm.close();
+    await db.disposeRealm();
     return name;
 }

@@ -6,12 +6,12 @@ import RNFetchBlob from 'rn-fetch-blob'
 export async function getEmotionFromImage(image: any): Promise<any> {
     try {
         const axiosCall = await makeFetchCall("/face/v1.0/detect", [{key:"returnFaceId",value:"false"},{key:"returnFaceLandmarks",value:"false"},{key:"returnFaceAttributes",value:"age,gender,smile,facialHair,headPose,glasses,emotion,hair,makeup,accessories,blur,exposure,noise" }], image);
-        return JSON.stringify(axiosCall);
+        return axiosCall;
     }
     catch (exception) {
         if (exception.response)
-            return JSON.stringify(exception.response);
-        return JSON.stringify(exception);
+            return exception.response;
+        return exception;
     }
 
 }
@@ -37,6 +37,6 @@ async function makeFetchCall(path: string, additionalParams?: { key: string, val
                                         'Ocp-Apim-Subscription-Key': azureKey
                                     },
                                     data);
-    return fetchResult.data;
+    return JSON.parse(fetchResult.data);
 }
 

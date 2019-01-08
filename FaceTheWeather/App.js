@@ -34,6 +34,7 @@ export default class App extends Component<Props, State> {
         // this.setState({darkskyTesting});
         await updateUser("Daniel", "Martin");
         const darkskyTesting = await getUserInfoName();
+
         this.setState({ darkskyTesting })
     }
     render() {

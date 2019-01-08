@@ -1,8 +1,9 @@
 // @flow
 
-import schema from '../schema';
 import Realm from 'realm';
+import { DBSchema } from '../db';
 import {type Location } from './location';
+import { WeatherSchema } from '../schema';
 export type Weather = {
     id: number,
     temperature: string,
@@ -12,15 +13,5 @@ export type Weather = {
     location: Location
 }
 
-export const WeatherSchema = {
-    name: 'Weather',
-    primaryKey: 'id',
-    properties:{
-        id: 'int',
-        temperature: 'string',
-        precipitationType: 'string',
-        precipitationPercentage: 'string',
-        temperature:'int',
-        location: 'Location'
-    }
-}
+
+const db:DBSchema<Weather> = new DBSchema<Weather>(WeatherSchema.name);

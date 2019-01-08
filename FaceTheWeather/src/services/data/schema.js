@@ -29,7 +29,6 @@ export default class DBSchema<T:UserInfo|Weather|Location|Mood>{
 
     getObjects = async <T>(query?:string) : Promise<T[]> => {
         await this.initRealm();
-        debugger;
         let data = this.realm.objects(this.dbName);
         if (query)
             data = data.filtered(query);

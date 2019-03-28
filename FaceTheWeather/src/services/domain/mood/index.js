@@ -1,5 +1,5 @@
 // @flow
-import { type emotions, getWeathersByEmotion, saveWeatherByEmotion } from '../../data/repositories/mood';
+import { type emotions, getWeathersByEmotion, saveWeatherByEmotion, getCountOfMoodRecords } from '../../data/repositories/mood';
 import { type Weather } from '../../data/repositories/weather';
 
 function sortKeyMatch(fields:{key:string,count:number}[]) :{key:string,count:number}[] {
@@ -73,6 +73,9 @@ export async function getByEmotion(emotion: emotions) : Promise<{ temperature:st
         precipitationPercentage
     };
     return favoriteWeather;
+}
+export async function getCountOfWeatherRecords(){
+    return getCountOfMoodRecords();
 }
 export async function saveByEmotion(emotion:emotions, location:{city:string,state:string}, temperature:number, conditions:string, precipitationPercentage:string) :Promise<void> {
     await saveWeatherByEmotion(emotion,location,temperature,conditions,precipitationPercentage);

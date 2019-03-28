@@ -14,8 +14,8 @@ export class DBSchema<T>{
             this.realm = await openSchema();
     }
     disposeRealm = async () : Promise<void> => {
-        this.realm.close();
-        this.realm = null;
+        // await this.realm.close();
+        // this.realm = null;
     }
 
     getObjects = async <T>(query?:string) : Promise<T[]> => {
@@ -37,7 +37,6 @@ export class DBSchema<T>{
         this.realm.write(() => {
             this.realm.create(this.dbName,dbObject,true);
         });
-        this.disposeRealm();
     }
 
 }

@@ -9,10 +9,9 @@ import {
     Button
 } from 'react-native';
 
-import { updateUser, getUserInfoName } from '../../services/data/repositories/userInfo';
 import LoadScreen from '../../components/Controls/LoadScreen';
 import styles from '../../assets/Styles';
-import { saveByEmotion, getByEmotion } from '../../services/domain/mood';
+import { saveByEmotion, getByEmotion, getCountOfWeatherRecords } from '../../services/domain/mood';
 import { type emotions } from '../../services/data/repositories/mood';
 import { createGridRow } from '../Controls/gridDisplay';
 import { type CurrentGeoLocation } from '../../services/domain/currentLocation/flowtypes';
@@ -29,7 +28,8 @@ type State = {
         precipitationPercentage: string,
         conditions: string
     },
-    selectedEmotion: ?emotions
+    selectedEmotion: ?emotions,
+    totalRecords:number
 }
 
 export default class MyData extends React.Component<Props, State> {
@@ -37,21 +37,23 @@ export default class MyData extends React.Component<Props, State> {
     state = {
         isLoading: true,
         weatherChoice: null,
-        selectedEmotion: null
+        selectedEmotion: null, 
+        totalRecords:0
     }
     componentDidMount = async () => {
         const weatherChoice = await this.loadMyData('happiness');
-        this.setState({ isLoading: false, weatherChoice });
+        this.setState({ isLoading: false, weatherChoice, totalRecords:weatherChoice.totalRecords });
     }
-    loadMyData = async (emotion: emotions): Promise<{ temperature: string, precipitationPercentage: string, conditions: string }> => {
-        return getByEmotion(emotion);
-
+    loadMyData = async (emotion: emotions): Promise<{ temperature: string, precipitationPercentage: string, conditions: string, totalRecords:number }> => {
+        const totalRecords = await getCountOfWeatherRecords();
+        const emotionData = await getByEmotion(emotion);
+        return {...emotionData, totalRecords}
     }
     reloadData = () => {
         this.setState({ isLoading: true });
         const emotion: emotions = this.state.selectedEmotion || 'happiness';
         this.loadMyData(emotion).then(weatherChoice => {
-            this.setState({ isLoading: false, weatherChoice });
+            this.setState({ isLoading: false, weatherChoice,totalRecords:weatherChoice.totalRecords});
         });
 
     }
@@ -79,7 +81,7 @@ export default class MyData extends React.Component<Props, State> {
             <View style={styles.container}>
                 <View style={styles.rootContainer}>
                     <View style={styles.container}>
-                        <Text>My preferred weather is: </Text>
+                        <Text>Out of {this.state.totalRecords}, the preferred weather is: </Text>
                     </View>
                     <View style={styles.container}>
                         <View style={{ flex: 1, flexDirection: 'column', padding: 10 }}>

@@ -22,8 +22,13 @@ export async function getLatestId(): Promise<number> {
 export async function getWeathersByEmotion(emotion: emotions): Promise<Weather[]> {
     const recs: Mood[] = await db.getObjects(`emotion = "${emotion}"`);
     return recs.map(t => t.weather);
-
 }
+
+export async function getCountOfMoodRecords(): Promise<number>{
+    const recs = await db.getObjects();
+    return recs.length;
+}
+
 export async function saveWeatherByEmotion(emotion: emotions,
     location: {
         city: string,
@@ -55,3 +60,4 @@ export async function saveWeatherByEmotion(emotion: emotions,
     }
     await db.write(rec);
 }
+

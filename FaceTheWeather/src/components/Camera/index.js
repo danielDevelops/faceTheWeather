@@ -1,7 +1,7 @@
 // @flow
 
 import { RNCamera } from 'react-native-camera';
-import React, { Component } from 'react';
+import * as React from 'react';
 import {
     Dimensions,
     Text,
@@ -21,7 +21,7 @@ type State = {
     emotion: ?string
 }
 
-export default class FtWCamera extends Component<Props, State> {
+export default class FtWCamera extends React.Component<Props, State> {
     state = {
         emotion: null
     }

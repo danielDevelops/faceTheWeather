@@ -12,11 +12,12 @@ function createUrl(path:string,query:string,additionalParams?:{key:string,value:
             addParams = `${addParams}&${item.key}=${item.value}`;
         });
     }
-    return `${azureMapUri}/${path}?api-version=1.0&subscription-key=${azureMapKey}&query=${query}{addParams}`;
+    return `${azureMapUri}/${path}?api-version=1.0&subscription-key=${azureMapKey}&query=${query}${addParams}`;
 }
 
 export async function getLocationByLatLongAsync(latitude:number,longitude:number) : Promise<AzureReverseAddress>{
-    const call = await axios.get(createUrl("/search/address/reverse/json",`${latitude},${longitude}`));
+    const url = createUrl("/search/address/reverse/json",`${latitude},${longitude}`);
+    const call = await axios.get(url);
     return call.data;
 }
 

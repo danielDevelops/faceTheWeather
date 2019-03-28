@@ -6,7 +6,6 @@ import {type Location } from './location';
 import { WeatherSchema } from '../schema';
 export type Weather = {
     id: number,
-    temperature: string,
     precipitationType: string,
     precipitationPercentage: string,
     temperature:number,

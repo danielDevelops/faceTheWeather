@@ -39,7 +39,6 @@ export const WeatherSchema = {
     primaryKey: 'id',
     properties:{
         id: 'int',
-        temperature: 'string',
         precipitationType: 'string',
         precipitationPercentage: 'string',
         temperature:'int',

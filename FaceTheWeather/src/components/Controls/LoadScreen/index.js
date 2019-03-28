@@ -7,7 +7,8 @@ import {
 import Modal from '../Modal';
 
 type Props = {
-    isVisible:boolean
+    isVisible:boolean,
+    displayAsModal:boolean
 }
 type State = {
 
@@ -15,15 +16,20 @@ type State = {
 
 export default class LoadScreen extends React.Component<Props,State> {
     static defaultProps = {
-        isVisible:true
+        isVisible:true,
+        displayAsModal:true
     }
     render(){
-        return(
-            <Modal
-                isVisible={this.props.isVisible}
-            >
-                <ActivityIndicator color={"#ffffff"} size={'large'} />
-            </Modal>
-        );
+        if (this.props.displayAsModal)
+            return(
+                <Modal
+                    isVisible={this.props.isVisible}
+                >
+                    <ActivityIndicator color={"#ffffff"} size={'large'} />
+                </Modal>
+            );
+        return (
+            <ActivityIndicator color={"#ffffff"} size={'large'} />
+        )
     }
 }

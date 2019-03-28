@@ -16,33 +16,14 @@ export default class App extends Component<Props, State> {
 
     }
     componentDidMount = async () => {
-        // //const darkSkyData = await getForcast("28.7881","-81.6047");
-        // //const darkskyTesting = JSON.stringify(darkSkyData);
-        // const position  = await getCurrentCorrdinatesAsync();
 
-        // const dataFromAzure = await getLocationByLatLongAsync(position.coords.latitude,position.coords.longitude);
-        // //const dataFromAzure = await getLocationByAddress("");
-
-        // const darkskyTesting = JSON.stringify(dataFromAzure);
-        // this.setState({darkskyTesting});
-        //this.setState({ darkskyTesting })
     }
     render() {
         return (
-            <SignIn />
+            <View style={{ flex: 1, flexDirection: 'column' }}>
+                <SignIn />
+            </View>
         );
-        // return (
-        //     <View style={{flex:1}}>
-        //         <View style={styles.container}>
-        //             <Text style={styles.welcome}>Face the Weather!!!</Text>
-        //             <Text>{this.state.darkskyTesting}</Text>
-
-        //         </View>
-        //         <View style={{flex:.75}}>
-        //             <FtWCamera />
-        //         </View>
-        //     </View>
-        // );
     }
 }
 

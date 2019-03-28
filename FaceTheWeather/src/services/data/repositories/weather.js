@@ -6,7 +6,7 @@ import {type Location } from './location';
 import { WeatherSchema } from '../schema';
 export type Weather = {
     id: number,
-    precipitationType: string,
+    conditions: string,
     precipitationPercentage: string,
     temperature:number,
     location: Location
@@ -14,3 +14,7 @@ export type Weather = {
 
 
 const db:DBSchema<Weather> = new DBSchema<Weather>(WeatherSchema.name);
+export async function getLatestId() : Promise<number> {
+    return await db.getNextId();
+    
+}

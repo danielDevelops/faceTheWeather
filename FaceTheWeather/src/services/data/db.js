@@ -25,6 +25,13 @@ export class DBSchema<T>{
             data = data.filtered(query);
         return data;
     }
+    getNextId = async () : Promise<number> => {
+        await this.initRealm();
+        const rec = this.realm.objects(this.dbName).sorted('id',true)[0];
+        if (!rec)
+            return 0;
+        return rec.id + 1;
+    }
     write = async <T>(dbObject:T) :Promise<void> => {
         await this.initRealm();
         this.realm.write(() => {

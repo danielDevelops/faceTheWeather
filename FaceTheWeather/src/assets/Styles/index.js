@@ -6,17 +6,18 @@ import {
 
 const styles = StyleSheet.create({
     rootContainer:{
-        display:'flex', 
+        flexDirection:'column',
         flex: 1,
         alignItems:'center', 
         justifyContent:'center'
     },
     container: {
-        flex: .30,
-        justifyContent: 'center',
+        flex: 1,
+        flexDirection:'row',
+        justifyContent:'center',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-        borderRadius:10
+        backgroundColor: '#ddd',
+        borderRadius:20
     },
     welcomeText:{
         fontSize: 16,
@@ -38,4 +39,9 @@ const styles = StyleSheet.create({
     }
 });
 
+export function flattenedStylesheet(){
+    return StyleSheet.flatten(styles);
+}
+
 export default styles;
+

@@ -11,8 +11,12 @@ import {
 
 import { updateUser, getUserInfoName } from '../../services/data/repositories/userInfo';
 import LoadScreen from '../../components/Controls/LoadScreen';
-import styles from '../../assets/Styles';
+import styles, { flattenedStylesheet } from '../../assets/Styles';
 import Weather from '../Weather';
+import MyData from '../MyData';
+import { type CurrentGeoLocation } from '../../services/domain/currentLocation/flowtypes';
+import { type DarkSkyForcast, type Currently } from '../../services/api/darksky/flowtypes';
+import { type AzureReverseAddress } from '../../services/api/mapping/flowtypes';
 
 type Props = {
 
@@ -71,6 +75,13 @@ export default class SignIn extends React.Component<Props, State>{
             </View>
         );
     }
+    _weatherView:?{getCurrentStateWeatherData:() => {position:?CurrentGeoLocation, forcast:?DarkSkyForcast, location:?AzureReverseAddress}};
+    getCurrentWeather = () : ?{position:?CurrentGeoLocation, forcast:?DarkSkyForcast, location:?AzureReverseAddress}=> {
+        if (!this._weatherView)
+            return null;
+        const currentWeatherState = this._weatherView.getCurrentStateWeatherData();
+        return currentWeatherState;
+    }
     render() {
         const { userName, loading } = this.state;
         if (loading)
@@ -78,12 +89,17 @@ export default class SignIn extends React.Component<Props, State>{
         if (userName)
             return (
                 <View style={styles.rootContainer}>
-                    <View style={styles.container}>
+                    <View style={{...flattenedStylesheet(), flex:.5 }}>
+                        <View style={styles.rootContainer}>
                         <Text style={styles.welcomeText}>Welcome to Face the Weather</Text>
                         <Text style={styles.welcomeText}>@ {userName}</Text>
+                        </View>
                     </View>
-                    <View style={styles.container}>
-                        <Weather />
+                    <View style={styles.container} >
+                        <Weather ref={ref => this._weatherView = ref}/>
+                    </View>
+                    <View style={styles.container} >
+                        <MyData getCurrentWeather={this.getCurrentWeather}/>
                     </View>
                 </View>
             );

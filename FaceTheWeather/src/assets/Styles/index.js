@@ -86,9 +86,8 @@ const styles = StyleSheet.create({
 
 });
 
-export function flattenedStylesheet(){
-    // $FlowFixMe
-    return StyleSheet.flatten(styles);
+export function flattenedStylesheet(styleSheetProp:Object){
+    return StyleSheet.flatten(styleSheetProp);
 }
 
 export default styles;

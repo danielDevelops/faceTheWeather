@@ -14,8 +14,8 @@ export class DBSchema<T>{
             this.realm = await openSchema();
     }
     disposeRealm = async () : Promise<void> => {
-        this.realm.close();
-        this.realm = null;
+        // await this.realm.close();
+        // this.realm = null;
     }
 
     getObjects = async <T>(query?:string) : Promise<T[]> => {
@@ -25,12 +25,18 @@ export class DBSchema<T>{
             data = data.filtered(query);
         return data;
     }
+    getNextId = async () : Promise<number> => {
+        await this.initRealm();
+        const rec = this.realm.objects(this.dbName).sorted('id',true)[0];
+        if (!rec)
+            return 0;
+        return rec.id + 1;
+    }
     write = async <T>(dbObject:T) :Promise<void> => {
         await this.initRealm();
         this.realm.write(() => {
             this.realm.create(this.dbName,dbObject,true);
         });
-        this.disposeRealm();
     }
 
 }

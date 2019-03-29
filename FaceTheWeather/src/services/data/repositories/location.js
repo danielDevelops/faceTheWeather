@@ -11,6 +11,10 @@ export type Location = {
 }
 
 const db:DBSchema<Location> = new DBSchema(LocationSchema.name);
+
+export async function getLatestId() : Promise<number> {
+    return await db.getNextId();
+}
 export function getLocation () {
     return 'my location';
 }

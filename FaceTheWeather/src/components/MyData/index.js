@@ -140,8 +140,9 @@ export default class MyData extends React.Component<Props, State> {
                                 </View>
                                 <View style={{ flexDirection: 'row', flex: .5 }}>
                                     <Button
-                                        title={'Apply'}
+                                        title={'Record Weather'}
                                         onPress={this.saveCurrentWeatherAs}
+                                        disabled={!this.state.selectedEmotion}
                                     />
                                 </View>
                             </View>

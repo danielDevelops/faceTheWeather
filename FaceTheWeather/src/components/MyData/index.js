@@ -88,6 +88,7 @@ export default class MyData extends React.Component<Props, State> {
             currentConditions.summary,
             currentConditions.precipProbability.toString()).then(async () => {
                 await this.reloadData();
+                this.setState({selectedEmotion:null})
             });
     }
 

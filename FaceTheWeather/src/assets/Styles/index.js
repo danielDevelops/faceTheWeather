@@ -36,10 +36,58 @@ const styles = StyleSheet.create({
         minWidth:200,
         borderWidth:2,
         borderColor:'#eee'
-    }
+    },
+    pickerBottomModal: {
+        flex: 1,
+        justifyContent: 'flex-end'
+    },
+    pickerButtonCancel:{
+        fontSize: 18,
+        color: '#007AFF',
+        textAlign:'left'
+    },
+    pickerButtonDone: {
+        fontSize: 18,
+        color: '#007AFF',
+        textAlign:'right'
+    },
+    pickerCancelButtonContainer:{
+        flex:.5,
+        alignItems:'flex-start'
+    },
+    pickerDoneButtonContainer: {
+        flex:.5,
+        alignItems:'flex-end'
+    },
+    pickerModalContent: {
+        backgroundColor: 'white',
+        padding: 22,
+        borderRadius: 20,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+        flex: .33
+    },
+    pickerBottomModal: {
+        flex: 1,
+        justifyContent: 'flex-end'
+    },
+    pickerTouchableContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: 46,
+        borderWidth: 1,
+        borderColor: '#404041',
+        paddingLeft: 6,
+        paddingRight: 4,
+        paddingTop: 10,
+        marginBottom: 10,
+    },
+
 });
 
 export function flattenedStylesheet(){
+    // $FlowFixMe
     return StyleSheet.flatten(styles);
 }
 

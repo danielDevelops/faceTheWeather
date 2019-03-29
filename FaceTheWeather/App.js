@@ -1,7 +1,9 @@
 // @flow
 
-import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import {
+    KeyboardAvoidingView
+} from 'react-native';
 
 import FtWCamera from './src/components/Camera';
 
@@ -11,7 +13,7 @@ type Props = {};
 type State = {
 
 }
-export default class App extends Component<Props, State> {
+export default class App extends React.Component<Props, State> {
     state = {
 
     }
@@ -20,23 +22,13 @@ export default class App extends Component<Props, State> {
     }
     render() {
         return (
-            <View style={{ flex: 1, flexDirection: 'column' }}>
+            <KeyboardAvoidingView
+                style={{ flex: 1, flexDirection: 'row' }}
+                behavior="padding"
+                enabled
+            >
                 <SignIn />
-            </View>
+            </KeyboardAvoidingView>
         );
     }
 }
-
-const styles = StyleSheet.create({
-
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
-});

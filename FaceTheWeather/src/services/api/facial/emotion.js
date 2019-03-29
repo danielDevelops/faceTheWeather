@@ -2,8 +2,9 @@
 import axios, { AxiosInstance } from 'axios';
 import appConfig from '../../../../app.config';
 import RNFetchBlob from 'rn-fetch-blob'
+import { type AzureFacialRecogition } from './flowtypes';
 
-export async function getEmotionFromImage(image: any): Promise<any> {
+export async function getEmotionFromImage(image: any): Promise<AzureFacialRecogition> {
     try {
         const axiosCall = await makeFetchCall("/face/v1.0/detect", [{key:"returnFaceId",value:"false"},{key:"returnFaceLandmarks",value:"false"},{key:"returnFaceAttributes",value:"age,gender,smile,facialHair,headPose,glasses,emotion,hair,makeup,accessories,blur,exposure,noise" }], image);
         return axiosCall;
@@ -40,3 +41,23 @@ async function makeFetchCall(path: string, additionalParams?: { key: string, val
     return JSON.parse(fetchResult.data);
 }
 
+
+export function extractEmotionFromFacialCall(object:?AzureFacialRecogition) : ?string {
+    if (!object)
+        return null;
+    if (!object.faceAttributes)
+        return null;
+    const allEmotions = [
+        {key:'anger', value:object.faceAttributes.emotion.anger},
+        {key: 'contempt' , value:object.faceAttributes.emotion.contempt},
+        {key: 'disgust' , value:object.faceAttributes.emotion.disgust},
+        {key: 'fear' , value:object.faceAttributes.emotion.fear},
+        {key: 'happiness' , value:object.faceAttributes.emotion.happiness},
+        {key: 'neutral' , value:object.faceAttributes.emotion.neutral},
+        {key: 'sadness' , value:object.faceAttributes.emotion.sadness},
+        {key: 'surprise' , value:object.faceAttributes.emotion.surprise}
+    ];
+
+    const sortedEmotions = allEmotions.sort((a, b) => a.value > b.value ? 1 : -1);
+    return sortedEmotions[0].value;
+}

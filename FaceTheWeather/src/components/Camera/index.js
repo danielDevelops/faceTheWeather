@@ -11,18 +11,23 @@ import {
     ScrollView
 } from 'react-native';
 
-import { getEmotionFromImage } from '../../services/api/facial/emotion';
+import { getEmotionFromImage, extractEmotionFromFacialCall } from '../../services/api/facial/emotion';
+import { type emotions } from '../../services/data/repositories/mood';
 
 
 type Props = {
+    onSelectEmotion: (emotion: ?emotions) => void
 
 }
 type State = {
-    emotion: ?string
+    azureData: ?string,
+    emotion: ?emotions
+
 }
 
 export default class FtWCamera extends React.Component<Props, State> {
     state = {
+        azureData: null,
         emotion: null
     }
     camera: ?RNCamera;
@@ -32,29 +37,43 @@ export default class FtWCamera extends React.Component<Props, State> {
         if (this.camera == null)
             return;
         const data = await this.camera.takePictureAsync(options)
-        const emotion = await getEmotionFromImage(data.base64);
-        this.setState({ emotion });
+        const azureData = await getEmotionFromImage(data.base64);
+        const emotion = extractEmotionFromFacialCall(azureData);
+        // $FlowFixMe 'This is returning as a string but it requires an enum
+        this.setState({ azureData, emotion });
     }
 
+    getResetButtons = (): React.Node => {
+        return (
+            <View>
+                <View style={{ flex: .3, flexDirection: 'row', }}>
+                    <TouchableOpacity
+                        onPress={() => this.setState({ azureData: null, emotion: null })}
+                        style={styles.reset}
+                    >
+                        <Text style={{ fontSize: 14 }}> Reset </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => this.props.onSelectEmotion(this.state.emotion)}
+                        style={styles.reset}
+                    >
+                        <Text style={{ fontSize: 14 }}> Select Emotion </Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
+    }
     render = () => {
-        if (this.state.emotion) {
+        if (this.state.azureData) {
             return (
                 <ScrollView>
+                    {this.getResetButtons()}
                     <View>
                         <Text>
-                            {JSON.stringify(this.state.emotion, undefined, 2)}
+                            {JSON.stringify(this.state.azureData, undefined, 2)}
                         </Text>
                     </View>
-                    <View>
-                        <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center', }}>
-                            <TouchableOpacity
-                                onPress={() => this.setState({emotion:null})}
-                                style={styles.capture}
-                            >
-                                <Text style={{ fontSize: 14 }}> Reset </Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                    {this.state.azureData && this.state.azureData.length > 10 && this.getResetButtons()}
                 </ScrollView>
             );
         }
@@ -89,13 +108,11 @@ export default class FtWCamera extends React.Component<Props, State> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column',
+        flexDirection: 'row',
         backgroundColor: 'black'
     },
     preview: {
         flex: 1,
-        justifyContent: 'flex-end',
-        alignItems: 'center'
     },
     capture: {
         flex: 0,
@@ -105,6 +122,15 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         alignSelf: 'center',
         margin: 20
+    },
+    reset: {
+        flex: 0,
+        backgroundColor: '#fff',
+        borderRadius: 5,
+        padding: 15,
+        paddingHorizontal: 20,
+        margin: 20,
+        alignSelf: 'center'
     }
 });
 

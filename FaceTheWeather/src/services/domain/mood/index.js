@@ -17,7 +17,7 @@ function getTopCountOfRecords(fields: string[]): string {
     let records = [{ key: 'no matches found', count: -1 }];
     fields.forEach((val) => {
         let item = records.find(t => t.key === val);
-        if (item == undefined) {
+        if (!item) {
             item = { key: val, count: 0 };
             records.push(item);
         }
@@ -26,12 +26,18 @@ function getTopCountOfRecords(fields: string[]): string {
     return sortKeyMatch(records)[0].key;
 }
 
+function getNearestValueCloestTo(integer:number, closeestTo:number) : string {
+    if (integer % closeestTo > 2)
+        return ((integer + closeestTo) - (integer % closeestTo)).toString();
+    return (integer - integer % closeestTo).toString();
+}
+
 function getMaxValueByRecordGroup(fields: number[]): string {
     let records = [{ key: 'no matches found', count: -1 }];
     fields.forEach((val) => {
-        const groupId = (Math.floor(val / 10 % 10) * 10).toString();
+        const groupId = getNearestValueCloestTo(val,2);
         let item = records.find(t => t.key === groupId);
-        if (item == undefined) {
+        if (!item) {
             item = { key: groupId, count: 0 };
             records.push(item);
         }

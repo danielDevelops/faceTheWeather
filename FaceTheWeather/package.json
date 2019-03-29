@@ -11,6 +11,7 @@
     "react": "16.6.3",
     "react-native": "0.57.8",
     "react-native-camera": "^1.6.4",
+    "react-native-cli": "^2.0.1",
     "react-native-modal": "^9.0.0",
     "react-native-realm": "^0.1.2",
     "react-redux": "^6.0.0",
@@ -21,7 +22,7 @@
   "devDependencies": {
     "babel-jest": "^24.5.0",
     "jest": "^24.5.0",
-    "metro-react-native-babel-preset": "0.51.1",
+    "metro-react-native-babel-preset": "^0.53.1",
     "react-test-renderer": "16.6.3"
   },
   "jest": {

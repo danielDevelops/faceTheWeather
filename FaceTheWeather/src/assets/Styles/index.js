@@ -37,10 +37,6 @@ const styles = StyleSheet.create({
         borderWidth:2,
         borderColor:'#eee'
     },
-    pickerBottomModal: {
-        flex: 1,
-        justifyContent: 'flex-end'
-    },
     pickerButtonCancel:{
         fontSize: 18,
         color: '#007AFF',

@@ -67,7 +67,7 @@ function getTopWeatherByField(
     }
 }
 
-export async function getByEmotion(emotion: emotions) : Promise<{ temperature:string, conditions:string, precipitationPercentage:string }> {
+export async function getByEmotion(emotion: emotions) : Promise<{ temperature:string, conditions:string, precipitationPercentage:string, emotionTotal:number }> {
     const weathers = await getWeathersByEmotion(emotion);
     const temperature = getTopWeatherByField(weathers,'number','temperature');
     const conditions = getTopWeatherByField(weathers,'string','conditions');
@@ -76,7 +76,8 @@ export async function getByEmotion(emotion: emotions) : Promise<{ temperature:st
     const favoriteWeather = {
         temperature,
         conditions,
-        precipitationPercentage
+        precipitationPercentage,
+        emotionTotal:weathers.length
     };
     return favoriteWeather;
 }

@@ -13,6 +13,7 @@ import {
 
 import { getEmotionFromImage, extractEmotionFromFacialCall } from '../../services/api/facial/emotion';
 import { type emotions } from '../../services/data/repositories/mood';
+import LoadScreen from '../Controls/LoadScreen';
 
 
 type Props = {
@@ -21,14 +22,17 @@ type Props = {
 }
 type State = {
     azureData: ?string,
-    emotion: ?emotions
-
+    emotion: ?emotions,
+    isLoading: boolean,
+    snapDisabled:boolean
 }
 
 export default class FtWCamera extends React.Component<Props, State> {
     state = {
         azureData: null,
-        emotion: null
+        emotion: null,
+        isLoading: false,
+        snapDisabled:false
     }
     camera: ?RNCamera;
     takePicture = async () => {
@@ -36,11 +40,20 @@ export default class FtWCamera extends React.Component<Props, State> {
         const options = { quality: 1, base64: true };
         if (this.camera == null)
             return;
-        const data = await this.camera.takePictureAsync(options)
-        const azureData = await getEmotionFromImage(data.base64);
-        const emotion = extractEmotionFromFacialCall(azureData);
-        // $FlowFixMe 'This is returning as a string but it requires an enum
-        this.setState({ azureData, emotion });
+        this.setState({snapDisabled:true});
+        try {
+            if (this.camera == null)
+                return;
+            const data = await this.camera.takePictureAsync(options);
+            this.setState({ isLoading: true });
+            const azureData = await getEmotionFromImage(data.base64);
+            const emotion = extractEmotionFromFacialCall(azureData);
+            // $FlowFixMe 'This is returning as a string but it requires an enum
+            this.setState({ azureData, emotion, isLoading: false , snapDisabled:false});
+        }
+        catch (exception) {
+            this.setState({ isLoading: false, snapDisabled:false });
+        }
     }
 
     getResetButtons = (): React.Node => {
@@ -64,10 +77,15 @@ export default class FtWCamera extends React.Component<Props, State> {
         );
     }
     render = () => {
+        if (this.state.isLoading)
+            return <LoadScreen displayAsModal={false} />
         if (this.state.azureData) {
             return (
                 <ScrollView>
                     {this.getResetButtons()}
+                    <View>
+                        <Text>Your current higest emotion is: {this.state.emotion}.</Text>
+                    </View>
                     <View>
                         <Text>
                             {JSON.stringify(this.state.azureData, undefined, 2)}
@@ -96,9 +114,10 @@ export default class FtWCamera extends React.Component<Props, State> {
                 <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center', }}>
                     <TouchableOpacity
                         onPress={this.takePicture}
-                        style={styles.capture}
+                        style={this.state.snapDisabled ? styles.captureDisabled : styles.capture}
+                        disabled={this.state.snapDisabled}
                     >
-                        <Text style={{ fontSize: 14 }}> SNAP </Text>
+                        <Text style={this.state.snapDisabled ? styles.snapTextDisabled : styles.snapText}> SNAP </Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -122,6 +141,23 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         alignSelf: 'center',
         margin: 20
+    },
+    captureDisabled:{
+        flex: 0,
+        backgroundColor: '#ccc',
+        borderRadius: 5,
+        padding: 15,
+        paddingHorizontal: 20,
+        alignSelf: 'center',
+        margin: 20
+    },
+    snapText:{
+        fontSize:14
+    },
+    snapTextDisabled:{
+        fontSize:14,
+        color:'#fff'
+
     },
     reset: {
         flex: 0,

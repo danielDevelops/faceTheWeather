@@ -28,7 +28,8 @@ type State = {
     weatherChoice: ?{
         temperature: string,
         precipitationPercentage: string,
-        conditions: string
+        conditions: string,
+        emotionTotal:number
     },
     selectedEmotion: ?emotions,
     totalRecords: number,
@@ -48,7 +49,7 @@ export default class MyData extends React.Component<Props, State> {
         const weatherChoice = await this.loadMyData('happiness');
         this.setState({ isLoading: false, weatherChoice, totalRecords: weatherChoice.totalRecords });
     }
-    loadMyData = async (emotion: emotions): Promise<{ temperature: string, precipitationPercentage: string, conditions: string, totalRecords: number }> => {
+    loadMyData = async (emotion: emotions): Promise<{ temperature: string, precipitationPercentage: string, conditions: string, totalRecords: number, emotionTotal:number }> => {
         const totalRecords = await getCountOfWeatherRecords();
         const emotionData = await getByEmotion(emotion);
         return { ...emotionData, totalRecords }
@@ -118,12 +119,16 @@ export default class MyData extends React.Component<Props, State> {
             <View style={styles.container}>
                 <View style={styles.rootContainer}>
                     <View style={styles.container}>
-                        <View style={{ flexDirection: 'column', padding: 10 }}>
-                            <View style={{ flexDirection: 'row', flex: .2 }}>
-                                <Text>Out of {this.state.totalRecords}, the preferred weather for {this.state.selectedEmotion || 'happiness'} is: </Text>
+                        <View style={{ flexDirection: 'column', padding: 10, flex:1 }}>
+                            <View style={{ flexDirection: 'row', flex: .2, alignSelf:"flex-start", alignContent:'flex-start'}}>
+                                    <Text style={{flexWrap:'wrap'}}>A total of {this.state.totalRecords} have been created.</Text>
                             </View>
-                            <View style={{ flexDirection: 'row', flex: 1 }}>
+                            <View style={{ flexDirection: 'row', flex: .2, alignSelf:'flex-start', alignContent:'flex-start'}}>
+                                <Text>The following data is for {this.state.selectedEmotion ? this.state.selectedEmotion : 'happiness'}.</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', flex: 1, paddingTop:10 }}>
                                 <View style={{ flex: 1, flexDirection: 'column', paddingRight: 10, paddingLeft: 10 }}>
+                                    {createGridRow("Total Records", this.state.weatherChoice ? this.state.weatherChoice.emotionTotal.toString() : null)}
                                     {createGridRow("Temperature", this.state.weatherChoice ? this.state.weatherChoice.temperature : null)}
                                     {createGridRow("Conditions", this.state.weatherChoice ? this.state.weatherChoice.conditions : null)}
                                     {createGridRow("Precipitation %", this.state.weatherChoice ? this.state.weatherChoice.precipitationPercentage : null)}
